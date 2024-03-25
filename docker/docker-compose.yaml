@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  slackbot:
+    container_name: slackbot
+    image: ghcr.io/obezsmertnyi/slackbot:v1.0.1
+    environment:
+      SLACK_AUTH_TOKEN: ${SLACK_AUTH_TOKEN}  # Slack authentication token
+      SLACK_CHANNEL_ID: ${SLACK_CHANNEL_ID}  # Slack channel ID where the bot will operate
+      SLACK_APP_TOKEN: ${SLACK_APP_TOKEN}  # Slack App-Level token
+      YOUR_GITHUB_TOKEN: ${YOUR_GITHUB_TOKEN}  # GitHub token for accessing GitHub APIs
+      GITHUB_OWNER: ${GITHUB_OWNER}  # Owner of the GitHub repository
+      GITHUB_REPO: ${GITHUB_REPO}  # GitHub Flux repository name
+      # Kubernetes configuration: Specify either KUBECONFIG path (to be mounted) or KUBE_SERVER, KUBE_CA, and KUBE_TOKEN
+      KUBE_SERVER: ${KUBE_SERVER}  # Kubernetes API server URL (used if KUBECONFIG is not provided)
+      KUBE_CA: ${KUBE_CA}  # Kubernetes Cluster CA certificate (base64 encoded, used if KUBECONFIG is not provided)
+      KUBE_TOKEN: ${KUBE_TOKEN}  # Kubernetes access token (used if KUBECONFIG is not provided)
+    #   KUBECONFIG: /kube/kubeconfig.yaml  # Path inside the container where kubeconfig file will be mounted
+    volumes:
+    #   - ./kubeconfig.yaml:/kube/kubeconfig.yaml  # Mount the kubeconfig file from the host to the container
+      - ./data:/data
+    network_mode: "host"  # Use host networking for local cluster access (e.g., Minikube, k3d). Note: May not work on Docker for Mac/Windows.
+
+# Note:
+# - The `--network host` option is useful for local development when containers need to use the host's network. This allows the container to interact with local services like a Kubernetes cluster running locally.
+# - Specify `KUBE_SERVER`, `KUBE_CA`, and `KUBE_TOKEN` to configure Kubernetes access without a kubeconfig file. This approach is useful when you prefer not to store the kubeconfig file on the host or when using secret management services to store configuration files.
+# - If you prefer to use a kubeconfig file, ensure it is mounted into the container and specify its path in the container using the `KUBECONFIG` environment variable.

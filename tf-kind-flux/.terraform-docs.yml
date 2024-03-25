@@ -1,0 +1,24 @@
+formatter: "markdown table" # this is required
+
+output:
+  file: README.md
+  mode: inject
+  #  template: |-
+  #    <!-- BEGIN_TF_DOCS -->
+  #    {{ .Content }}
+  #    <!-- END_TF_DOCS -->
+
+sort:
+  enabled: true
+  by: name
+
+settings:
+  anchor: true
+  color: true
+  hide-empty: true
+  html: false
+  lockfile: true
+  read-comments: true
+  required: true
+  sensitive: true
+  type: true

@@ -1,0 +1,26 @@
+# This is a basic workflow to help you get started with Actions
+name: Auto Create PR to Main
+
+on:
+  push:
+    branches: [ "prod" ]
+  
+  workflow_dispatch:      
+
+jobs:
+  auto-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Prod Branch
+        uses: actions/checkout@v3
+        with:
+          ref: 'prod'
+      
+      - name: Create Pull Request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: 'prod'
+          destination_branch: 'main'
+          pr_title: 'Merge Prod to Main'
+          pr_body: 'This PR is auto-generated to merge changes from Prod to Main for review.'
+          github_token: ${{ secrets.GITHUB_TOKEN }}

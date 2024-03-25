@@ -1,0 +1,70 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubebot-access-binding
+  namespace: kubebot
+subjects:
+- kind: ServiceAccount
+  name: kubebot-manager
+  namespace: kubebot
+roleRef:
+  kind: Role
+  name: kubebot-access
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubebot-access-binding
+  namespace: dev
+subjects:
+- kind: ServiceAccount
+  name: kubebot-manager
+  namespace: kubebot
+roleRef:
+  kind: Role
+  name: kubebot-access
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubebot-access-binding
+  namespace: qa
+subjects:
+- kind: ServiceAccount
+  name: kubebot-manager
+  namespace: kubebot
+roleRef:
+  kind: Role
+  name: kubebot-access
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubebot-access-binding
+  namespace: stage
+subjects:
+- kind: ServiceAccount
+  name: kubebot-manager
+  namespace: kubebot
+roleRef:
+  kind: Role
+  name: kubebot-access
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubebot-access-binding
+  namespace: prod
+subjects:
+- kind: ServiceAccount
+  name: kubebot-manager
+  namespace: kubebot
+roleRef:
+  kind: Role
+  name: kubebot-access
+  apiGroup: rbac.authorization.k8s.io

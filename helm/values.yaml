@@ -1,0 +1,62 @@
+namespace: kubebot
+
+image:
+  repository: ghcr.io/obezsmertnyi/slackbot
+  tag: "v1.0.2-27f5b50-linux-amd64"
+  pullPolicy: IfNotPresent
+
+serviceAccountName: kubebot-manager
+
+roles:
+  - namespace: kubebot
+    name: kubebot-access
+  - namespace: dev
+    name: kubebot-access
+  - namespace: qa
+    name: kubebot-access
+  - namespace: stage
+    name: kubebot-access
+  - namespace: prod
+    name: kubebot-access
+
+persistentVolume:
+  name: kubebot-pv
+  storage: 100Mi
+  path: "/mnt/kubebot/data"
+
+persistentVolumeClaim:
+  name: kubebot-pvc
+  storage: 100Mi
+
+externalSecret:
+  refreshInterval: "15s"
+  secretStoreRef:
+    name: global-vault-backend
+    kind: ClusterSecretStore
+  target:
+    name: kubebot-env
+  data:
+    - secretKey: slack_auth_token
+      remoteRef:
+        key: slackbot/env
+        property: SLACK_AUTH_TOKEN
+    - secretKey: slack_channel_id
+      remoteRef:
+        key: slackbot/env
+        property: SLACK_CHANNEL_ID
+    - secretKey: slack_app_token
+      remoteRef:
+        key: slackbot/env
+        property: SLACK_APP_TOKEN
+    - secretKey: your_github_token
+      remoteRef:
+        key: slackbot/env
+        property: YOUR_GITHUB_TOKEN
+    - secretKey: github_owner
+      remoteRef:
+        key: slackbot/env
+        property: GITHUB_OWNER
+    - secretKey: github_repo
+      remoteRef:
+        key: slackbot/env
+        property: GITHUB_REPO

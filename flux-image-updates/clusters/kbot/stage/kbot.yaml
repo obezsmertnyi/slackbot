@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kbot
+  namespace: stage
+spec:
+  interval: 1m0s
+  ref:
+    branch: stage
+  url: https://github.com/obezsmertnyi/kbot

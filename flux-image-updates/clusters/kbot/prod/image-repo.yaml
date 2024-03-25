@@ -1,0 +1,9 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: kbot
+  namespace: prod
+spec:
+  image: ghcr.io/obezsmertnyi/kbot
+  interval: 20s

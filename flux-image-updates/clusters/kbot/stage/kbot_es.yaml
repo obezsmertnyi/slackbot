@@ -1,0 +1,27 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+
+metadata:
+  namespace: stage
+  name: tele-token
+
+spec:
+  refreshInterval: "15s"
+
+  secretStoreRef:
+    name: global-vault-backend
+    kind: ClusterSecretStore
+
+  target:
+    name: kbot
+    template:
+      engineVersion: v2
+      data:
+        token: "{{ .kbot_tele_token | toString }}"
+
+  data:
+    - secretKey: kbot_tele_token
+      remoteRef:
+        key: stage/tele_token
+        property: TELE_TOKEN

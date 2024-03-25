@@ -1,0 +1,12 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: kbot
+  namespace: stage
+spec:
+  imageRepositoryRef:
+    name: kbot
+  policy:
+    semver:
+      range: 'v1.0.5-d6407c8-linux-amd64'

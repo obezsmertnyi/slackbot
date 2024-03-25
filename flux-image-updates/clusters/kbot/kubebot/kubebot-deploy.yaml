@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubebot
+  namespace: kubebot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubebot
+  template:
+    metadata:
+      labels:
+        app: kubebot
+    spec:
+      serviceAccountName: kubebot-manager
+      volumes:
+      - name: kubebot-storage
+        persistentVolumeClaim:
+          claimName: kubebot-pvc
+      containers:
+      - name: kubebot
+        image: ghcr.io/obezsmertnyi/slackbot:v1.0.2-27f5b50-linux-amd64
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "512Mi"
+            cpu: "750m"
+        ports:
+          - name: metrics
+            containerPort: 9090
+        volumeMounts:
+        - name: kubebot-storage
+          mountPath: "/data"
+        env:
+          - name: SLACK_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: kubebot-env
+                key: slack_auth_token
+          - name: SLACK_CHANNEL_ID
+            valueFrom:
+              secretKeyRef:
+                name: kubebot-env
+                key: slack_channel_id
+          - name: SLACK_APP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: kubebot-env
+                key: slack_app_token
+          - name: YOUR_GITHUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: kubebot-env
+                key: your_github_token
+          - name: GITHUB_OWNER
+            valueFrom:
+              secretKeyRef:
+                name: kubebot-env
+                key: github_owner
+          - name: GITHUB_REPO
+            valueFrom:
+              secretKeyRef:
+                name: kubebot-env
+                key: github_repo
